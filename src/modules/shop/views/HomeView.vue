@@ -1,7 +1,5 @@
 <template>
-
-
-<!-- Title -->
+    <!-- Title -->
 <div class="pt-32  bg-white">
 <h1 class="text-center text-2xl font-bold text-gray-800">All Products</h1>
 </div>
@@ -36,67 +34,62 @@
 	</a>
 </div>
 
-<div v-if="!products"> 
+<div v-if="!products">
 	<h1>Cargando Productos</h1>
 </div>
+
 <!-- Product List -->
-<ProductList v-else :products="products">
+<ProductList v-else :products="products"/>
 
-
-</ProductList>
-
-<ButtonNavegation 
-:has-more-data="!! products && products.length<10" 
-:is-first-page="page===1"
+<ButtonNavigation 
+:has-more-data="!!products && products.length <10"
+:is-first-page="page === 1"
 :page="page"
-
-
-> </ButtonNavegation>
-
+/>
 
 </template>
 
 <script setup lang="ts">
-
-import ButtonNavegation from '@/modules/common/components/ButtonNavegation.vue';
+import * as Vue from 'vue';
 import { getProducts } from '@/modules/products/actions';
-import ProductList from '@/modules/products/components/ProductList.vue'; //Tarjetas de imagen de compra
-import { useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useQuery } from '@tanstack/vue-query';
+import ProductList from '@/modules/products/components/ProductList.vue';
+import ButtonNavigation from '@/modules/common/components/ButtonNavegation.vue';
 import { useRoute } from 'vue-router';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
+import { watch } from 'vue';
 import { watchEffect } from 'vue';
+import { useQueryClient } from '@tanstack/vue-query';
 
+const route = useRoute();
+const page = ref(Number (route.query.page || 1));
+const queryClient = useQueryClient();
 
-const route= useRoute();
-const page= ref(Number(route.query.page ||1));
-const queryClient= useQueryClient();
-
-const {data: products=[]}=useQuery({
-  queryKey:['products', {page: page }],
-  queryFn:()=> getProducts(page.value),
+const {data: products = []} = useQuery({
+  queryKey: ['products', {page: page}],
+  queryFn: () => getProducts(page.value), 
 });
 
 watch(
-	()=> route.query.page,
-	(newPage)=> {
-		page.value=Number(newPage||1)
-		window.scrollTo({top:0, behavior:'smooth'})
+	() => route.query.page,
+	(newPage) => {
+		page.value = Number(newPage || 1);
+		window.scrollTo({top:0, behavior: 'smooth'});
 	}
 )
 
 watchEffect(
-	()=>{
+	()=> {
 		queryClient.prefetchQuery({
-			queryKey:['products',{page: page.value+1}],
-			queryFn:()=>getProducts(page.value+1),
+			queryKey: ['products', {page: page.value+1}],
+			queryFn: () => getProducts(page.value+1),
+
 		})
 	}
 )
-
-
 
 </script>
 
 <style scoped>
 
-</style>@/api/tesloApi
+</style>
