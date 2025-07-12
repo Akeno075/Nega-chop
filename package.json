@@ -16,10 +16,12 @@
     "@tanstack/react-query": "^5.81.5",
     "@tanstack/vue-query": "^5.81.5",
     "@tanstack/vue-query-devtools": "^5.81.5",
+    "@vueuse/core": "^13.5.0",
     "axios": "^1.10.0",
     "pinia": "^3.0.3",
     "vue": "^3.5.17",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",
