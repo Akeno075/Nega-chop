@@ -43,7 +43,7 @@
 
 <ButtonNavigation 
 :has-more-data="!!products && products.length <10"
-:is-first-page="page === 1"
+:is-first-page="page === 0"
 :page="page"
 />
 
@@ -62,7 +62,7 @@ import { watchEffect } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
 
 const route = useRoute();
-const page = ref(Number (route.query.page || 1));
+const page = ref(Number (route.query.page || 0));
 const queryClient = useQueryClient();
 
 const {data: products = []} = useQuery({
@@ -73,7 +73,7 @@ const {data: products = []} = useQuery({
 watch(
 	() => route.query.page,
 	(newPage) => {
-		page.value = Number(newPage || 1);
+		page.value = Number(newPage || 0);
 		window.scrollTo({top:0, behavior: 'smooth'});
 	}
 )
